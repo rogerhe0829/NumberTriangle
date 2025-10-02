@@ -30,4 +30,6 @@ what you are tasked with for this task.
   - ONE closed issue
   - ONE closed PR
   - exactly ONE commit author (other than the course team)
-  - at least TWO commits by you (e.g., make one commit for each file you complete)
+  - at least TWO commits by you (e.g., make one commit for each file you complete)Extra line for commit requirement
+PR demo line
+Second commit for repo requirement
