@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -88,7 +90,15 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        // TODO implement this method
+        // Empty path
+        if (path.isEmpty()) {
+            return this.root;
+        } else if (path.charAt(0) == 'l') { // Next node is 'l'
+            return this.left.retrieve(path.substring(1));
+        } else if (path.charAt(0) == 'r') { // NExt ndoe is 'r'
+            return this.right.retrieve(path.substring(1));
+        }
+
         return -1;
     }
 
@@ -103,6 +113,7 @@ public class NumberTriangle {
      * @return the topmost NumberTriangle object in the NumberTriangle structure read from the specified file
      * @throws IOException may naturally occur if an issue reading the file occurs
      */
+
     public static NumberTriangle loadTriangle(String fname) throws IOException {
         // open the file and get a BufferedReader object whose methods
         // are more convenient to work with when reading the file contents.
@@ -111,6 +122,8 @@ public class NumberTriangle {
 
 
         // TODO define any variables that you want to use to store things
+        List<String> lines = new ArrayList<>();
+        NumberTriangle[][] rows = null;
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
@@ -123,13 +136,39 @@ public class NumberTriangle {
             System.out.println(line);
 
             // TODO process the line
+            lines.add(line);
 
             //read the next line
             line = br.readLine();
         }
         br.close();
+
+        // TODO build the array and link nodes
+        int height = lines.size();
+        rows = new NumberTriangle[height][];
+        for (int i = 0; i < height; i++) {
+            String[] tokens = lines.get(i).trim().split("\\s+");
+            rows[i] = new NumberTriangle[tokens.length];
+            for (int j = 0; j < tokens.length; j++) {
+                rows[i][j] = new NumberTriangle(Integer.parseInt(tokens[j]));
+            }
+        }
+
+        // link parents to children
+        for (int i = 0; i < height - 1; i++) {
+            for (int j = 0; j < rows[i].length; j++) {
+                rows[i][j].setLeft(rows[i + 1][j]);
+                rows[i][j].setRight(rows[i + 1][j + 1]);
+            }
+        }
+
+        if (height > 0) {
+            top = rows[0][0];
+        }
+
         return top;
     }
+
 
     public static void main(String[] args) throws IOException {
 
